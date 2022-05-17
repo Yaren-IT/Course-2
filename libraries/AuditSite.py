@@ -15,7 +15,6 @@ class AuditSite:
         self.site = site
 
     def load_order_list(self):
-        logger.info("Gleich mal laden")
         _secret = Vault().get_secret("orderdata")
         tables = Tables()
         crypto =  Crypto()
@@ -38,9 +37,6 @@ class AuditSite:
     def start_browser(self):
         self.browser = Browser.Browser()
         self.browser.new_browser(browser=Browser.SupportedBrowsers.chromium)
-        # self.browser.new_browser(browser=Browser.SupportedBrowsers.chromium,
-        #     headless=False
-        #     )
         self.browser_id_1 = self.browser.new_context(javaScriptEnabled=True)
         self.browser_id_2 = self.browser.new_context(javaScriptEnabled=False)
     
@@ -99,7 +95,6 @@ class AuditSite:
 
     def ensure_data(self):
         assert "" == self.browser.get_selected_options("id=head", Browser.SelectAttribute.value)
-        # assert True == self.browser.get_ch  get_checkbox_state("id=id-body-" + self.body)
         for i in range(1,7):
             assert False == self.browser.get_checkbox_state("id=id-body-" + str(i))
         assert "" == self.browser.get_text(selector="css=:not(input#address).form-control")
@@ -143,7 +138,6 @@ class AuditSite:
             assert "attached" in self.browser.get_element_states("id=order-another")
         except AssertionError:
             logger.warn("Order Button does not work this time.")
-            # TODO install dialog prerequists
             dialog = Dialogs()
             dialog.add_heading("Order Button does not work this time.")
             dialog.add_submit_buttons("OK")
